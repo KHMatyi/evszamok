@@ -1,3 +1,4 @@
+const header = ["Időszak","Évszám","Esemény","Tananyag"]
 const starterData = [
     {
         Időszak:"XVI. század",
