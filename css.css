@@ -4,12 +4,10 @@
 th {
     background-color: gray;
 }
-
-table, td,th{
+table, td, th{
     border: 1px solid black;
     border-collapse: collapse;
 }
-
 p{
     color: red;
 }

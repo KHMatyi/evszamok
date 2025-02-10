@@ -122,8 +122,6 @@ class T_Table{
         for (const i of defaultData){
             this.#addRow(i);
         }
-
-
     }
     /**
      * @param {HeaderData} headerData 
@@ -132,9 +130,9 @@ class T_Table{
         const tr = document.createElement("tr");
         this.#thead.appendChild(tr);
         for (const i of headerData) {
-            const td = document.createElement("td");
-            tr.appendChild(td);
-            td.innerHTML = i;
+            const th = document.createElement("th");
+            tr.appendChild(th);
+            th.innerHTML = i;
         }
     }
     /**
@@ -144,9 +142,9 @@ class T_Table{
         const tr = document.createElement("tr");
         this.#tbody.appendChild(tr);
         
-        const ido = this.#tder(row.Időszak, tr ,".gray");
+        const ido = this.#tder(row.Időszak, tr ,"gray");
         this.#tder(row.Évszám, tr);
-        this.#tder(row.Esemény, tr, ".gray");
+        this.#tder(row.Esemény, tr, "gray");
         this.#tder(row.Tananyag, tr);
 
         if (row.Évszám2 && row.Esemény2 && row.Tananyag2){
@@ -156,7 +154,7 @@ class T_Table{
             this.#tbody.appendChild(tr);
 
             this.#tder(row.Évszám2, tr);
-            this.#tder(row.Esemény2, tr, ".gray");
+            this.#tder(row.Esemény2, tr, "gray");
             this.#tder(row.Tananyag2, tr);
         }
     }
@@ -174,8 +172,79 @@ class T_Table{
     }
 }
 
-class F_Form{
 
+
+
+class F_Form{
+    #form
+    #errors
+    #fields
+    #table
+    /**
+     * @param {FormRow[]} formData 
+     * @param {HTMLElement} parent 
+     * @param {T_Table} table 
+     */
+    constructor(formData, parent, table){
+        this.#form = document.createElement("form");
+        parent.appendChild(this.#form);
+        this.#fields = {};
+        this.#errors = {};
+        this.#table = table;
+
+        for (const i of formData){
+            this.#fields[i.id] = this.#rowadder(i);
+
+            const p = document.createElement("p");
+            this.#form.appendChild(p);
+            p.id = i.id + "Err";
+            this.#errors[i.id + "Err"] = p;
+
+            this.#form.appendChild(document.createElement("br"));
+        }
+
+        const button = document.createElement("button");
+        this.#form.appendChild(button);
+        button.innerHTML = "Hozzáadás";
+    }
+    /**
+     * @param {FormRow} row 
+     */
+    #rowadder(row){
+        const label = document.createElement("label");
+        this.#form.appendChild(label);
+        label.for = row.id;
+        label.innerHTML = row.text;
+        this.#form.appendChild(document.createElement("br"));
+
+        if (row.option){
+            const select = document.createElement("select");
+            this.#form.appendChild(select)
+            select.id = row.id;
+            
+            for (const i of row.option){
+                const option = document.createElement("option");
+                select.appendChild(option);
+                option.value = i.value;
+                option.innerHTML = i.text;
+            }
+            return select;
+
+        } else {
+            const input = document.createElement("input");
+            this.#form.appendChild(input);
+
+            input.type = "text";
+            input.id = row.id
+
+            return input;
+        }
+    }
+    #event = (e) => {
+        
+    }
 }
 
+
 const t = new T_Table(header,document.getElementById("table"),starterData);
+const f = new F_Form(formData, document.getElementById("form"), t);
