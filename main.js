@@ -1,7 +1,7 @@
 /**
- * @typedef {{Időszak:String,Évszám:String,Esemény:String,Tananyag:String,Évszám2:String,Esemény2:String,Tananyag2:String}} TableRow
+ * @typedef {korszak:String,evszam1:String,megnev1:String,tan1:String,evszam2?:String,megnev2?:String,tan2?:String} TableRow
  * @typedef {String[]} HeaderData
- * @typedef {{text:String,id:String,option:{value:String,text:String}[]}} FormRow
+ * @typedef {{text:String,id:String,option?:{value:String,text:String}[]}} FormRow
  */
 
 const header = ["Időszak","Évszám","Esemény","Tananyag"]
@@ -257,12 +257,16 @@ class F_Form{
             tan2:this.#fields.tan2.value,
         }
         const data = this.#validate(reqformInput, optFormInput);
-        console.log(data)
         if (data){
             this.#table.addRow(data);
         }
     }
-
+    /**
+     * 
+     * @param {{korszak:String,evszam1:String,megnev1:String,tan1:String}} reqFormInput 
+     * @param {evszam2:String,megnev2:String,tan2:String} optFormInput 
+     * @returns {TableRow | null}
+     */
     #validate(reqFormInput, optFormInput){
         for (const i in this.#errors){
             this.#errors[i].innerHTML = "";
